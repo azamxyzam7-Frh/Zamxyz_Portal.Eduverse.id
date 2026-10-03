@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Eduverse.id - Portal pembelajaran interaktif untuk pelajar Indonesia.">
+  <meta name="theme-color" content="#5b5cf0">
+  <title>Eduverse.id — Belajar Lebih Seru</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="Eduverse.id">
+        <span class="brand-mark">E</span>
+        <span>
+          <strong>Eduverse<span>.id</span></strong>
+          <small>Belajar • Jelajah • Berkembang</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Buka menu" aria-expanded="false">☰</button>
+      <nav id="mainNav" class="main-nav">
+        <a href="#home">Beranda</a>
+        <a href="#materi">Materi</a>
+        <a href="#kuis">Kuis</a>
+        <a href="#fakta">Fakta</a>
+        <a href="#asisten">EduAI</a>
+        <button id="themeToggle" class="icon-btn" type="button" aria-label="Ganti tema">☀️</button>
+        <button id="profileNav" class="profile-nav" type="button">Profil</button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">PORTAL PEMBELAJARAN INTERAKTIF</span>
+          <h1>Belajar jadi lebih <span>seru</span> bersama Eduverse.id</h1>
+          <p class="hero-text">Temukan materi pelajaran, kuis, fakta menarik, dan asisten belajar dalam satu tempat.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#materi">Mulai Belajar</a>
+            <a class="btn secondary" href="#kuis">Coba Kuis</a>
+          </div>
+          <div class="hero-mini">
+            <span>🕒 <b id="localClock">--:--:--</b></span>
+            <span>📍 <b id="localZone">Zona waktu terdeteksi</b></span>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="planet">🌍</div>
+          <div>
+            <h3>Ruang belajar kamu</h3>
+            <p>Progress tersimpan otomatis di perangkat ini.</p>
+          </div>
+          <div class="progress-ring" id="progressRing" aria-label="Progress belajar">0%</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-section">
+      <div class="container stats-grid">
+        <div class="stat-card"><span>📚</span><strong id="materialCount">0</strong><small>Materi</small></div>
+        <div class="stat-card"><span>❓</span><strong id="quizCount">0</strong><small>Soal Kuis</small></div>
+        <div class="stat-card"><span>✅</span><strong id="learnedCount">0</strong><small>Materi Dipelajari</small></div>
+        <div class="stat-card"><span>🏆</span><strong id="bestScore">0%</strong><small>Skor Terbaik</small></div>
+      </div>
+    </section>
+
+    <section id="materi" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">PUSAT MATERI</span>
+            <h2>Pelajaran lengkap untuk dijelajahi</h2>
+            <p>Gunakan pencarian atau filter untuk menemukan topik dengan cepat.</p>
+          </div>
+          <div class="search-wrap">
+            <input id="searchInput" type="search" placeholder="Cari materi, misalnya gravitasi..." autocomplete="off">
+          </div>
+        </div>
+        <div id="filterBar" class="filter-bar" aria-label="Filter mata pelajaran"></div>
+        <div id="materialsGrid" class="materials-grid"></div>
+        <p id="emptyMaterials" class="empty-state" hidden>Materi yang dicari belum ditemukan.</p>
+      </div>
+    </section>
+
+    <section id="kuis" class="section alt">
+      <div class="container quiz-layout">
+        <div>
+          <span class="eyebrow">UJI PEMAHAMAN</span>
+          <h2>Quiz pintar berdasarkan mata pelajaran</h2>
+          <p>Pilih pelajaran lalu jawab soal secara acak. Hasil dan skor terbaik tersimpan otomatis.</p>
+          <div class="quiz-settings">
+            <label>Mata pelajaran
+              <select id="quizSubject"></select>
+            </label>
+            <label>Jumlah soal
+              <select id="quizLength">
+                <option value="5">5 soal</option>
+                <option value="10" selected>10 soal</option>
+                <option value="15">15 soal</option>
+              </select>
+            </label>
+            <button id="startQuiz" class="btn primary" type="button">Mulai Kuis</button>
+          </div>
+        </div>
+
+        <div class="quiz-box" id="quizBox">
+          <div id="quizIdle" class="quiz-idle">
+            <div class="quiz-icon">🧠</div>
+            <h3>Siap menguji pengetahuan?</h3>
+            <p>Pilih topik di sebelah kiri lalu tekan “Mulai Kuis”.</p>
+          </div>
+
+          <div id="quizActive" hidden>
+            <div class="quiz-topline">
+              <span id="quizProgressText">Soal 1/10</span>
+              <span id="quizScoreText">Skor: 0</span>
+            </div>
+            <div class="progress-bar"><span id="quizProgressBar"></span></div>
+            <h3 id="quizQuestion"></h3>
+            <div id="quizOptions" class="quiz-options"></div>
+            <div class="quiz-controls">
+              <button id="nextQuestion" class="btn primary" type="button" disabled>Soal Berikutnya</button>
+            </div>
+          </div>
+
+          <div id="quizResult" hidden>
+            <div class="result-icon">🎉</div>
+            <h3>Kuis selesai!</h3>
+            <p id="resultText"></p>
+            <button id="retryQuiz" class="btn primary" type="button">Coba Lagi</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="fakta" class="section">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">TAHUKAH KAMU?</span>
+            <h2>Fakta menarik pilihan</h2>
+            <p>Fakta singkat yang bisa membuka rasa penasaranmu.</p>
+          </div>
+          <button id="randomFactBtn" class="btn secondary" type="button">🎲 Fakta Acak</button>
+        </div>
+        <div id="factsGrid" class="facts-grid"></div>
+      </div>
+    </section>
+
+    <section id="asisten" class="section alt">
+      <div class="container assistant-layout">
+        <div>
+          <span class="eyebrow">TEMAN BELAJAR</span>
+          <h2>EduAI</h2>
+          <p>Tanyakan hal-hal seputar materi yang tersedia. Asisten ini memakai pengetahuan lokal di dalam website, sehingga tetap berfungsi tanpa server atau API key.</p>
+          <div class="suggestions">
+            <button class="suggestion" type="button">Apa itu fotosintesis?</button>
+            <button class="suggestion" type="button">Jelaskan hukum Newton</button>
+            <button class="suggestion" type="button">Apa penyebab revolusi industri?</button>
+          </div>
+        </div>
+
+        <div class="chat-card">
+          <div id="chatMessages" class="chat-messages" aria-live="polite"></div>
+          <form id="chatForm" class="chat-form">
+            <input id="chatInput" type="text" placeholder="Tulis pertanyaanmu..." autocomplete="off">
+            <button class="btn primary" type="submit">Kirim</button>
+          </form>
+          <small class="chat-note">EduAI lokal • jawaban dibuat dari materi Eduverse.id</small>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="profileModal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-profile></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+      <button class="modal-close" type="button" data-close-profile aria-label="Tutup">×</button>
+      <h2 id="profileTitle">Profil Belajar</h2>
+      <p>Buat nama panggilan agar kartu profilmu muncul di Eduverse.id.</p>
+      <form id="profileForm">
+        <label>Nama panggilan
+          <input id="profileName" type="text" maxlength="30" placeholder="Contoh: Azam" required>
+        </label>
+        <button class="btn primary" type="submit">Simpan Profil</button>
+      </form>
+      <div id="profileSummary" class="profile-summary" hidden></div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><strong>Eduverse.id</strong><p>Belajar lebih terarah, kapan saja.</p></div>
+      <div><span id="year"></span> • Dibuat untuk pembelajaran interaktif.</div>
+    </div>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+  </html>
